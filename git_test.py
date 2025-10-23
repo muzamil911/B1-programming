@@ -5,3 +5,9 @@ print(f"hello, {name}. Is there anything else that i can help you today?")
 
 # i have to upload this to github but an interesting task is to do the same
 # in your terma
+
+### OK if i make changes here does the Github desktop detects it automatically? 
+# lets check###
+
+print("i am makeing changes to check GitHub desktop detection")
+
