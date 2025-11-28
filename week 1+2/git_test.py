@@ -11,3 +11,6 @@ print(f"hello, {name}. Is there anything else that i can help you today?")
 
 print("i am makeing changes to check GitHub desktop detection")
 
+''' git add . 
+    git commit -m ''
+    git push orign'''
