@@ -1,5 +1,6 @@
 # calculator.py
 # This program calculates profit and profit margin based on user input for revenue and costs.
+#lets go:
 
 # Get user input
 revenue = float(input("Enter total revenue: "))
