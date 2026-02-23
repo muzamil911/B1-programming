@@ -1,0 +1,88 @@
+def calculate_discounts():
+    # --- 1. Configuration & Data Structures ---
+    # We use dictionaries for O(1) lookup speed and easy updates to business rules
+    category_discounts = {
+        "Electronics": 0.10,
+        "Clothing": 0.15,
+        "Books": 0.05,
+        "Home": 0.12
+    }
+    
+    tier_discounts = {
+        "Premium": 0.05,
+        "Standard": 0.00,
+        "Budget": 0.02
+    }
+
+    # Tracking variables for the final console summary
+    total_discount_sum = 0
+    product_count = 0
+
+    # --- 2. File Operations & Error Handling ---
+    try:
+        # Opening both files simultaneously using the 'with' statement ensures 
+        # they are closed automatically even if an error occurs.
+        with open('/Users/muzam/repos/B1-programming/week_7/lab 1/products.txt', 'r') as infile, open('pricing_report.txt', 'w') as outfile:
+            
+            # Create a formatted header for the output file
+            header = f"{'Product':<25} | {'Base Price':>10} | {'Disc %':>7} | {'Disc Amt':>10} | {'Final Price':>12}"
+            outfile.write(header + "\n")
+            outfile.write("-" * len(header) + "\n")
+
+            # --- 3. Data Parsing Loop ---
+            for line in infile:
+                if not line.strip(): 
+                    continue # Ignore empty lines or whitespace
+                
+                try:
+                    # Unpack comma-separated values and remove leading/trailing whitespace
+                    name, price_str, category, tier = [item.strip() for item in line.split(',')]
+                    
+                    # Convert string price to float; this triggers ValueError if the data is non-numeric
+                    base_price = float(price_str)
+                    
+                    # --- 4. Business Logic: Discount Calculation ---
+                    # .get() allows us to provide a default value (0.0) if a category doesn't exist
+                    cat_rate = category_discounts.get(category, 0.0)
+                    tier_rate = tier_discounts.get(tier, 0.0)
+                    
+                    # Combine discounts and calculate dollar amounts
+                    total_rate = cat_rate + tier_rate
+                    discount_amount = base_price * total_rate
+                    final_price = base_price - discount_amount
+                    
+                    # Accumulate statistics for the final summary
+                    total_discount_sum += total_rate
+                    product_count += 1
+                    
+                    # --- 5. Writing Formatted Output ---
+                    # We use f-string padding (< for left-aligned, > for right-aligned)
+                    report_line = (f"{name:<25} | ${base_price:>9.2f} | "
+                                 f"{total_rate*100:>6.0f}% | ${discount_amount:>9.2f} | "
+                                 f"${final_price:>11.2f}")
+                    outfile.write(report_line + "\n")
+                    
+                except ValueError:
+                    # Specific error handling for bad data within a specific line
+                    print(f"Skipping invalid data row: {line.strip()}")
+
+        # --- 6. Final Console Summary ---
+        if product_count > 0:
+            avg_discount = (total_discount_sum / product_count) * 100
+            print("\n--- Processing Summary ---")
+            print(f"Total Products Processed: {product_count}")
+            print(f"Average Discount Applied: {avg_discount:.2f}%")
+            print("Report generated: pricing_report.txt")
+        else:
+            print("No valid products were processed.")
+
+    # --- 7. Main Exception Handling ---
+    except FileNotFoundError:
+        print("Error: The source file 'products.txt' was not found.")
+    except PermissionError:
+        print("Error: Could not write to 'pricing_report.txt'. Check if the file is open elsewhere.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+if __name__ == "__main__":
+    calculate_discounts()

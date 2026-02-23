@@ -1,0 +1,92 @@
+import os
+import re
+from datetime import datetime
+
+def analyze_server_logs():
+    # --- 1. Setup Portable Paths ---
+    # Using os.path.join() ensures this works on Windows, Mac, and Linux
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    input_log = os.path.join(base_dir, 'server_access.log')
+    error_report = os.path.join(base_dir, 'error_log.txt')
+    security_report = os.path.join(base_dir, 'security_incidents.txt')
+
+    # Security configuration
+    attack_signatures = ['sqlmap', 'curl', 'python-requests']
+    failed_logins = {} # Track IPs for brute force detection
+    BRUTE_FORCE_THRESHOLD = 3 
+
+    stats = {"total": 0, "errors": 0, "security": 0}
+
+    # --- 2. File Operations with 'with' Statement ---
+    # This handles automatic cleanup and prevents file corruption
+    try:
+        with open(input_log, 'r') as infile, \
+             open(error_report, 'w') as err_file, \
+             open(security_report, 'w') as sec_file:
+
+            # Writing headers as required by the lab
+            timestamp_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            err_file.write(f"HTTP ERROR LOG (4XX/5XX) - Generated {timestamp_str}\n" + "="*70 + "\n")
+            sec_file.write(f"SECURITY INCIDENT REPORT - Generated {timestamp_str}\n" + "="*70 + "\n")
+
+            # --- 3. Line-by-Line Processing ---
+            # Efficiently reads large files without using too much RAM
+            for line in infile:
+                if not line.strip(): continue
+                stats["total"] += 1
+
+                try:
+                    # Regex to capture: IP, Timestamp, Request, Status Code, and User Agent
+                    # This pattern accounts for quotes and brackets in Apache logs
+                    match = re.search(r'(\d+\.\d+\.\d+\.\d+) - - \[(.*?)\] "(.*?)" (\d+) (\d+) "(.*?)" "(.*?)"', line)
+                    
+                    if match:
+                        ip = match.group(1)
+                        time = match.group(2)
+                        request = match.group(3)
+                        status = match.group(4)
+                        user_agent = match.group(7)
+
+                        # --- 4. Logic: Error Logging ---
+                        # Capture any status starting with 4 (Client Error) or 5 (Server Error)
+                        if status.startswith(('4', '5')):
+                            err_file.write(f"[{time}] IP: {ip} | Status: {status} | Request: {request}\n")
+                            stats["errors"] += 1
+
+                        # --- 5. Logic: Security Analysis ---
+                        # A. Check for suspicious User Agents (like sqlmap)
+                        if any(sig in user_agent.lower() for sig in attack_signatures):
+                            sec_file.write(f"[SUSPICIOUS AGENT] {time} | IP: {ip} | Agent: {user_agent}\n")
+                            stats["security"] += 1
+
+                        # B. Detect Brute Force (Repeated 401 Unauthorized)
+                        if status == "401":
+                            failed_logins[ip] = failed_logins.get(ip, 0) + 1
+                            if failed_logins[ip] >= BRUTE_FORCE_THRESHOLD:
+                                sec_file.write(f"[BRUTE FORCE] {time} | IP: {ip} | Attempts: {failed_logins[ip]}\n")
+                                stats["security"] += 1
+
+                        # C. Detect Forbidden access attempts (403)
+                        if status == "403":
+                            sec_file.write(f"[UNAUTHORIZED] {time} | IP: {ip} | Target: {request}\n")
+                            stats["security"] += 1
+                    else:
+                        # Log parsing errors for malformed lines
+                        print(f"Warning: Line {stats['total']} did not match expected log format.")
+
+                except Exception as e:
+                    print(f"Error processing line {stats['total']}: {e}")
+
+        # --- 6. Console Summary ---
+        print("\nAnalysis Finished Successfully!")
+        print(f"Lines Processed: {stats['total']}")
+        print(f"Errors Found:    {stats['errors']} (Logged to error_log.txt)")
+        print(f"Incidents Found: {stats['security']} (Logged to security_incidents.txt)")
+
+    except FileNotFoundError:
+        print(f"Error: '{input_log}' not found. Please create it in the script's folder.")
+    except Exception as e:
+        print(f"Critical System Error: {e}")
+
+if __name__ == "__main__":
+    analyze_server_logs()
