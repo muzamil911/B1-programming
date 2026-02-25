@@ -1,0 +1,89 @@
+class Book:
+    def __init__(self, title, author, isbn):
+        self.title = title
+        self.author = author
+        self.isbn = isbn
+
+    def display_info(self):
+        return f"Title: {self.title:<25} | Author: {self.author:<20} | ISBN: {self.isbn}"
+
+class Library:
+    def __init__(self, name):
+        self.name = name
+        self.__books = []
+
+    def add_book_interactive(self):
+        print("\n--- Add New Book ---")
+        title = input("Enter Book Title: ")
+        author = input("Enter Author Name: ")
+        isbn = input("Enter ISBN: ")
+        
+        new_book = Book(title, author, isbn)
+        self.__books.append(new_book)
+        print(f"SUCCESS: '{title}' added to the catalog.")
+
+    def remove_book_interactive(self):
+        print("\n--- Remove a Book ---")
+        target_title = input("Enter the EXACT title of the book to remove: ")
+        
+        for book in self.__books:
+            if book.title.lower() == target_title.lower():
+                self.__books.remove(book)
+                print(f"DELETED: '{target_title}' has been removed.")
+                return
+        print(f"NOT FOUND: Could not find a book named '{target_title}'.")
+
+    def search_book_interactive(self):
+        print("\n--- Search Catalog ---")
+        query = input("Enter book title to search for: ")
+        
+        found = False
+        for book in self.__books:
+            if query.lower() in book.title.lower():
+                print(f"RESULT: {book.display_info()}")
+                found = True
+        
+        if not found:
+            print(f"No books matching '{query}' were found.")
+
+    def list_all_books(self):
+        print(f"\n--- {self.name} Current Inventory ---")
+        if not self.__books:
+            print("[Library is empty]")
+        else:
+            for book in self.__books:
+                print(book.display_info())
+        print("-" * 70)
+
+# --- Main Interaction Loop ---
+def main():
+    my_library = Library("Global Corporate Library")
+    
+    
+
+    while True:
+        print("\nLIBRARY MANAGEMENT SYSTEM")
+        print("1. Add a Book")
+        print("2. Remove a Book")
+        print("3. Search for a Book")
+        print("4. List All Books")
+        print("5. Exit")
+        
+        choice = input("\nSelect an option (1-5): ")
+
+        if choice == '1':
+            my_library.add_book_interactive()
+        elif choice == '2':
+            my_library.remove_book_interactive()
+        elif choice == '3':
+            my_library.search_book_interactive()
+        elif choice == '4':
+            my_library.list_all_books()
+        elif choice == '5':
+            print("Exiting system. Goodbye!")
+            break
+        else:
+            print("Invalid choice, please try again.")
+
+if __name__ == "__main__":
+    main()

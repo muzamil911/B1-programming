@@ -1,0 +1,134 @@
+import uuid
+from datetime import datetime, timedelta
+
+class Device:
+    def __init__(self, device_id, device_type, firmware_version, owner):
+        # --- 1. Device Class & Encapsulation ---
+        self.__device_id = device_id
+        self.__device_type = device_type
+        self.__firmware_version = firmware_version
+        self.__owner = owner
+        
+        # Internal state attributes
+        self.__compliance_status = True
+        self.__last_security_scan = datetime.now()
+        self.__is_active = True
+        self.__is_quarantined = False
+        self.__activity_log = []
+        
+        self.log_event("Device initialized and registered.")
+
+    # --- 3. Security Validation Methods ---
+    def check_compliance(self):
+        """Automatically updates compliance based on 30-day scan requirement."""
+        thirty_days_ago = datetime.now() - timedelta(days=30)
+        
+        if self.__last_security_scan < thirty_days_ago:
+            self.__compliance_status = False
+            self.log_event("Compliance Failure: Last scan exceeded 30 days.")
+        
+        if self.__is_quarantined:
+            self.__compliance_status = False
+            
+        return self.__compliance_status
+
+    def run_security_scan(self):
+        """Resets the scan timer and updates compliance."""
+        self.__last_security_scan = datetime.now()
+        self.__compliance_status = True
+        self.__is_quarantined = False
+        self.log_event("Security scan completed successfully.")
+
+    def update_firmware(self, new_version, user):
+        """Updates firmware if the user is the owner or an admin."""
+        if user['role'] == 'admin' or user['name'] == self.__owner:
+            self.__firmware_version = new_version
+            self.log_event(f"Firmware updated to {new_version} by {user['name']}.")
+            return True
+        return False
+
+    # --- 2. User-Device Interaction ---
+    def authorise_access(self, user, override=False):
+        """Checks permissions based on ownership, compliance, and roles."""
+        # Admin Override Logic
+        if override and user['role'] == 'admin':
+            self.log_event(f"ADMIN OVERRIDE: Access granted to {user['name']}.")
+            return True
+            
+        # Standard Validation
+        is_owner = user['name'] == self.__owner
+        is_compliant = self.check_compliance()
+        
+        if (is_owner or user['role'] == 'admin') and is_compliant:
+            self.log_event(f"Access granted to {user['name']}.")
+            return True
+            
+        self.log_event(f"Access DENIED to {user['name']}. (Compliant: {is_compliant})")
+        return False
+
+    def quarantine(self):
+        """Sets device to non-compliant and restricted state."""
+        self.__is_quarantined = True
+        self.__compliance_status = False
+        self.log_event("DEVICE QUARANTINED due to security risk.")
+
+    def log_event(self, message):
+        """Internal logging with timestamps."""
+        entry = f"{datetime.now()}: {message}"
+        self.__activity_log.append(entry)
+
+    def get_details(self):
+        """Safe display of device information."""
+        return {
+            "ID": self.__device_id,
+            "Type": self.__device_type,
+            "Version": self.__firmware_version,
+            "Owner": self.__owner,
+            "Compliant": self.__compliance_status,
+            "Quarantined": self.__is_quarantined
+        }
+
+# --- 4. System Integration ---
+class DeviceManager:
+    def __init__(self):
+        self.__inventory = {}
+
+    def add_device(self, device):
+        self.__inventory[device.get_details()["ID"]] = device
+
+    def get_security_report(self):
+        print(f"\n--- Corporate IoT Security Report ({datetime.now().date()}) ---")
+        for dev in self.__inventory.values():
+            details = dev.get_details()
+            status = "SAFE" if details["Compliant"] else "REJECTED"
+            print(f"Device {details['ID']} [{details['Type']}]: Status {status}")
+
+# --- Testing Scenarios ---
+if __name__ == "__main__":
+    manager = DeviceManager()
+    
+    # Define Users
+    admin_user = {"name": "Alice", "role": "admin"}
+    std_user = {"name": "Bob", "role": "standard"}
+    
+    # Create and Register Device
+    iot_sensor = Device("SNS-001", "Temperature", "v1.0", "Bob")
+    manager.add_device(iot_sensor)
+
+    # Scenario 1: Standard User Access
+    print(f"Bob accessing his sensor: {iot_sensor.authorise_access(std_user)}")
+    
+    # Scenario 2: Standard User Accessing Others
+    intruder = {"name": "Eve", "role": "standard"}
+    print(f"Eve accessing Bob's sensor: {iot_sensor.authorise_access(intruder)}")
+
+    # Scenario 3: Non-compliance (Simulate old scan)
+    iot_sensor._Device__last_security_scan = datetime.now() - timedelta(days=40)
+    print(f"Access after 40 days without scan: {iot_sensor.authorise_access(std_user)}")
+
+    # Scenario 4: Admin Override
+    print(f"Admin overriding non-compliance: {iot_sensor.authorise_access(admin_user, override=True)}")
+
+    # Scenario 5: Quarantine
+    iot_sensor.quarantine()
+    manager.get_security_report()

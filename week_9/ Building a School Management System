@@ -1,0 +1,45 @@
+# 01. Create the Base Class
+class Person:
+    """The parent class containing common attributes for all people."""
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def introduce(self):
+        """Returns a basic introduction."""
+        return f"Hi, my name is {self.name} and I am {self.age} years old."
+
+# 02. Build Student Class
+class Student(Person):
+    """The child class for students, inheriting from Person."""
+    def __init__(self, name, age, student_id):
+        # Call the parent __init__ to handle name and age
+        super().__init__(name, age)
+        self.student_id = student_id
+
+    def introduce(self):
+        """Override the parent method to include student-specific info."""
+        return f"Hi, I'm {self.name}, age {self.age}. My student ID is {self.student_id}."
+
+# 03. Build Teacher Class
+class Teacher(Person):
+    """The child class for teachers, inheriting from Person."""
+    def __init__(self, name, age, subject):
+        # Call the parent __init__
+        super().__init__(name, age)
+        self.subject = subject
+
+    def introduce(self):
+        """Override the parent method to include teaching-specific info."""
+        return f"Hello, I am {self.name}. I teach {self.subject} and I am {self.age} years old."
+
+# 04. Test Your Classes
+if __name__ == "__main__":
+    # Create instances as per the Expected Output
+    student_alice = Student("Alice", 16, "S001")
+    teacher_smith = Teacher("Mr. Smith", 35, "Mathematics")
+
+    # Call and print the results
+    print("--- School Management System ---")
+    print(student_alice.introduce())
+    print(teacher_smith.introduce())

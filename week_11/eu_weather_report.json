@@ -1,0 +1,272 @@
+{
+  "Vienna": {
+    "city": "Vienna",
+    "country": "Austria",
+    "current": {
+      "temp": 12.2,
+      "condition": "Mainly clear",
+      "wind": 7.4
+    },
+    "today_avg_prob": 0.0
+  },
+  "Brussels": {
+    "city": "Brussels",
+    "country": "Belgium",
+    "current": {
+      "temp": 17.7,
+      "condition": "Overcast",
+      "wind": 10.8
+    },
+    "today_avg_prob": 0.0
+  },
+  "Sofia": {
+    "city": "Sofia",
+    "country": "Bulgaria",
+    "current": {
+      "temp": 8.8,
+      "condition": "Mainly clear",
+      "wind": 19.2
+    },
+    "today_avg_prob": 0.0
+  },
+  "Zagreb": {
+    "city": "Zagreb",
+    "country": "Croatia",
+    "current": {
+      "temp": 13.6,
+      "condition": "Clear sky",
+      "wind": 8.2
+    },
+    "today_avg_prob": 0.0
+  },
+  "Nicosia": {
+    "city": "Nicosia",
+    "country": "Cyprus",
+    "current": {
+      "temp": 19.4,
+      "condition": "Overcast",
+      "wind": 18.8
+    },
+    "today_avg_prob": 0.6666666666666666
+  },
+  "Prague": {
+    "city": "Prague",
+    "country": "Czechia",
+    "current": {
+      "temp": 10.9,
+      "condition": "Clear sky",
+      "wind": 2.1
+    },
+    "today_avg_prob": 0.0
+  },
+  "Copenhagen": {
+    "city": "Copenhagen",
+    "country": "Denmark",
+    "current": {
+      "temp": 2.5,
+      "condition": "Overcast",
+      "wind": 17.3
+    },
+    "today_avg_prob": 7.708333333333333
+  },
+  "Tallinn": {
+    "city": "Tallinn",
+    "country": "Estonia",
+    "current": {
+      "temp": -1.0,
+      "condition": "Clear sky",
+      "wind": 5.0
+    },
+    "today_avg_prob": 0.0
+  },
+  "Helsinki": {
+    "city": "Helsinki",
+    "country": "Finland",
+    "current": {
+      "temp": -3.4,
+      "condition": "Clear sky",
+      "wind": 8.3
+    },
+    "today_avg_prob": 0.0
+  },
+  "Paris": {
+    "city": "Paris",
+    "country": "France",
+    "current": {
+      "temp": 16.2,
+      "condition": "Mainly clear",
+      "wind": 7.6
+    },
+    "today_avg_prob": 0.0
+  },
+  "Berlin": {
+    "city": "Berlin",
+    "country": "Germany",
+    "current": {
+      "temp": 9.2,
+      "condition": "Clear sky",
+      "wind": 8.6
+    },
+    "today_avg_prob": 0.0
+  },
+  "Athens": {
+    "city": "Athens",
+    "country": "Greece",
+    "current": {
+      "temp": 15.6,
+      "condition": "Partly cloudy",
+      "wind": 20.0
+    },
+    "today_avg_prob": 0.0
+  },
+  "Budapest": {
+    "city": "Budapest",
+    "country": "Hungary",
+    "current": {
+      "temp": 10.6,
+      "condition": "Overcast",
+      "wind": 15.8
+    },
+    "today_avg_prob": 0.0
+  },
+  "Dublin": {
+    "city": "Dublin",
+    "country": "Ireland",
+    "current": {
+      "temp": 13.5,
+      "condition": "Overcast",
+      "wind": 14.0
+    },
+    "today_avg_prob": 34.083333333333336
+  },
+  "Rome": {
+    "city": "Rome",
+    "country": "Italy",
+    "current": {
+      "temp": 18.3,
+      "condition": "Mainly clear",
+      "wind": 3.8
+    },
+    "today_avg_prob": 0.0
+  },
+  "Riga": {
+    "city": "Riga",
+    "country": "Latvia",
+    "current": {
+      "temp": 0.7,
+      "condition": "Mainly clear",
+      "wind": 6.5
+    },
+    "today_avg_prob": 2.75
+  },
+  "Vilnius": {
+    "city": "Vilnius",
+    "country": "Lithuania",
+    "current": {
+      "temp": 1.1,
+      "condition": "Overcast",
+      "wind": 9.7
+    },
+    "today_avg_prob": 7.916666666666667
+  },
+  "Luxembourg": {
+    "city": "Luxembourg",
+    "country": "Luxembourg",
+    "current": {
+      "temp": 11.8,
+      "condition": "Mainly clear",
+      "wind": 7.9
+    },
+    "today_avg_prob": 0.125
+  },
+  "Valletta": {
+    "city": "Valletta",
+    "country": "Malta",
+    "current": {
+      "temp": 17.9,
+      "condition": "Mainly clear",
+      "wind": 9.7
+    },
+    "today_avg_prob": 0.0
+  },
+  "Amsterdam": {
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "current": {
+      "temp": 15.5,
+      "condition": "Partly cloudy",
+      "wind": 14.0
+    },
+    "today_avg_prob": 0.4166666666666667
+  },
+  "Warsaw": {
+    "city": "Warsaw",
+    "country": "Poland",
+    "current": {
+      "temp": 2.0,
+      "condition": "Overcast",
+      "wind": 12.2
+    },
+    "today_avg_prob": 6.0
+  },
+  "Lisbon": {
+    "city": "Lisbon",
+    "country": "Portugal",
+    "current": {
+      "temp": 16.2,
+      "condition": "Overcast",
+      "wind": 4.1
+    },
+    "today_avg_prob": 9.25
+  },
+  "Bucharest": {
+    "city": "Bucharest",
+    "country": "Romania",
+    "current": {
+      "temp": 7.4,
+      "condition": "Partly cloudy",
+      "wind": 6.3
+    },
+    "today_avg_prob": 20.125
+  },
+  "Bratislava": {
+    "city": "Bratislava",
+    "country": "Slovakia",
+    "current": {
+      "temp": 10.0,
+      "condition": "Partly cloudy",
+      "wind": 7.1
+    },
+    "today_avg_prob": 0.0
+  },
+  "Ljubljana": {
+    "city": "Ljubljana",
+    "country": "Slovenia",
+    "current": {
+      "temp": 13.0,
+      "condition": "Clear sky",
+      "wind": 4.1
+    },
+    "today_avg_prob": 0.6666666666666666
+  },
+  "Madrid": {
+    "city": "Madrid",
+    "country": "Spain",
+    "current": {
+      "temp": 17.7,
+      "condition": "Mainly clear",
+      "wind": 4.9
+    },
+    "today_avg_prob": 0.0
+  },
+  "Stockholm": {
+    "city": "Stockholm",
+    "country": "Sweden",
+    "current": {
+      "temp": -0.2,
+      "condition": "Overcast",
+      "wind": 11.5
+    },
+    "today_avg_prob": 1.0
+  }
+}

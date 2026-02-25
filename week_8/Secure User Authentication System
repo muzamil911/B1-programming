@@ -1,0 +1,85 @@
+from datetime import datetime
+
+class User:
+    def __init__(self, username, password, privilege_level='standard'):
+        # Private attributes prevent Insecure Direct Object References (IDOR)
+        self.__username = username
+        self.__password_hash = self.__hash_password(password)
+        self.__privilege_level = privilege_level
+        self.__login_attempts = 0
+        self.__account_status = 'active'
+        self.__activity_log = []
+
+    def __hash_password(self, password):
+        """Simulates password hashing to prevent plain-text storage."""
+        return f"hashed_{password}"
+
+    def authenticate(self, password):
+        """Validates credentials and tracks failed attempts."""
+        if self.__account_status == 'locked':
+            self.__log_activity('Login attempt on locked account')
+            return False
+
+        if self.__hash_password(password) == self.__password_hash:
+            self.__login_attempts = 0 # Requirement: Reset attempts on success
+            self.__log_activity('Successful login')
+            return True
+        else:
+            self.__login_attempts += 1
+            self.__log_activity(f'Failed login attempt {self.__login_attempts}')
+            if self.__login_attempts >= 3:
+                self.lock_account()
+            return False
+
+    def check_privileges(self, required_level):
+        """Checks access based on privilege hierarchy."""
+        privilege_hierarchy = {'guest': 0, 'standard': 1, 'admin': 2}
+        user_rank = privilege_hierarchy.get(self.__privilege_level, 0)
+        required_rank = privilege_hierarchy.get(required_level, 0)
+        return user_rank >= required_rank
+
+    def lock_account(self):
+        """Security method to lock account after 3 failures."""
+        self.__account_status = 'locked'
+        self.__log_activity('Account locked due to failed login attempts')
+
+    def reset_login_attempts(self, admin_password):
+        """Privilege escalation/Reset validation."""
+        # Requirement: Proper validation for administrative tasks
+        if self.__hash_password(admin_password) == 'hashed_admin_secret':
+            self.__account_status = 'active'
+            self.__login_attempts = 0
+            self.__log_activity('Account unlocked by admin')
+            return True
+        return False
+
+    def __log_activity(self, message):
+        """Encapsulated logging method."""
+        self.__activity_log.append(f"{datetime.now()}: {message}")
+
+    def get_safe_info(self):
+        """Requirement: Safe display without exposing sensitive hashes."""
+        return {
+            'username': self.__username,
+            'privilege_level': self.__privilege_level,
+            'account_status': self.__account_status
+        }
+
+# --- Verification & Demonstration Block ---
+if __name__ == "__main__":
+    # Demonstrate Functional Outcome: Creating users
+    user = User("alice", "mypass123")
+    print(f"User Created: {user.get_safe_info()}")
+
+    # Demonstrate Functional Outcome: Locking
+    print("\nSimulating 3 failed logins...")
+    for _ in range(3):
+        user.authenticate("wrong_pass")
+    
+    print(f"Account Status: {user.get_safe_info()['account_status']}")
+
+    # Demonstrate Security Outcome: Prevention of direct access
+    try:
+        print(user.__password_hash)
+    except AttributeError:
+        print("\nSecurity Outcome Met: Direct access to password hash is blocked.")
