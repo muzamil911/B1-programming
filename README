@@ -1,0 +1,16 @@
+Course Name: B1 Programming.
+Student Name: Muzamil Hussain
+Student ID: S0603660.
+
+
+This repository contains weekly lab assignments from week 1 to week 15, except
+week 10 that is already submitted separatly and week 12 which was not uploaded in moodle. 
+
+We started from basics of programming and continued to object oriented programming and then at the end we also learned APIs and databases.
+
+
+Most of these programs can be run automatically by calling them in the terminal or just pressing the run button on the 
+right top corner of VS Code. (from week 1 to week 11). when running week 11 python file, the reslut will be saved in a .json file.
+
+After week 11, in all other weeks (13, 14 and 15) we are dealing with APIs and database so we will go to the respective folder, eg: week_13
+and then in the terminal we will run |  uvicorn main:app --reload  -or- uvicorn main:app --reload --port xxxx |
