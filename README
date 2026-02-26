@@ -14,3 +14,9 @@ right top corner of VS Code. (from week 1 to week 11). when running week 11 pyth
 
 After week 11, in all other weeks (13, 14 and 15) we are dealing with APIs and database so we will go to the respective folder, eg: week_13
 and then in the terminal we will run |  uvicorn main:app --reload  -or- uvicorn main:app --reload --port xxxx |
+
+in the last two weeks the resutls are abit different. 
+when you run the above provided code you will get a URL. Paste this URL and add /docs to the end, then you will see the actual site. and 
+all the data will be stored in a text file in one week and in the last week (week 15) the output or data will be stored in a .db file which
+is not readable directly as the text inside is gibbrish. so you will need to install an extension called: SQLite viewer and the you will be 
+able to see the output database.
